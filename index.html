@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <input type="text" id="count" placeholder="Enter no of item">
+    <button class="load">Load</button>
+    <div class="main">
+
+    </div>
+
+    <div class="user-details">
+
+    </div>
+    <script>
+        let i, container=document.querySelector(".main");
+        let m=document.querySelector(".user-details");
+    document.querySelector('.load').addEventListener('click',function(){
+        let counttext=document.querySelector('#count').value;
+        let count=parseInt(counttext);
+        
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res => res.json())
+        .then(data =>{
+          data=data.slice(0,count);
+            for(i=0;i<data.length;i++){
+                let user=data[i];
+                let x=document.createElement('p');
+                x.innerHTML=`Name: <strong>${user.name}</strong> <button class='t1'onclick="get(${user.id})">Click</button>`;
+                container.appendChild(x);
+            }
+        })
+
+    })
+
+       
+
+        function get(id){
+            fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+            .then(res => res.json())
+            .then(data => {
+              m.innerHTML=`
+                <div class="user">
+                    <p> Name:${data.name}<p>
+                     <p>Email: ${data.email}<p>
+                       <p>Website: ${data.website}</p>
+                        </div>`
+            })
+        }
+    </script>
+</body>
+</html>
